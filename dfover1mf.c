@@ -8,204 +8,217 @@
 #include "analysisTools.h"
 #include <TGraphErrors.h>
 
-/*void yields(const TString histname, const bool isWide = false, const bool doLog = false)
-{
-   char bufferGJets[1000];
-   sprintf(bufferGJets, "s_%s_GJets", histname.Data());
-   char bufferQCD[1000];
-   sprintf(bufferQCD, "s_%s_QCD", histname.Data());
+//TString year = "2016";
+TString year = "2017";
 
-   TFile * f_0p4 = TFile::Open("fragmentation.hdp.0p4.root");
-   TH1D * g_0p4 = (TH1D*)f_0p4->Get(bufferGJets);
-   g_0p4->SetLineWidth(2);
-   g_0p4->SetLineColor(6);
-   TH1D * q_0p4 = (TH1D*)f_0p4->Get(bufferQCD);
-   q_0p4->SetLineWidth(2);
-   q_0p4->SetLineColor(6);
+void runHist(const TString histname, const bool isWide=false) {
+  bool printText = false;
+  TFile * f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.2016.root");
+  TFile * f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.2016.root");
+  TFile * f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.2016.root");
+  if (year.Contains("17")) {
+    f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.2017.root");
+    f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.2017.root");
+    f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.2017.root");
+  }
+  TGraphAsymmErrors * g_0p4 = (TGraphAsymmErrors*)f_0p4->Get(histname);
+  TGraphAsymmErrors * g_0p3 = (TGraphAsymmErrors*)f_0p3->Get(histname);
+  TGraphAsymmErrors * g_0p2 = (TGraphAsymmErrors*)f_0p2->Get(histname);
 
-   TFile * f_0p3 = TFile::Open("fragmentation.hdp.0p3.root");
-   TH1D * g_0p3 = (TH1D*)f_0p3->Get(bufferGJets);
-   g_0p3->SetLineWidth(2);
-   g_0p3->SetLineColor(4);
-   TH1D * q_0p3 = (TH1D*)f_0p3->Get(bufferQCD);
-   q_0p3->SetLineWidth(2);
-   q_0p3->SetLineColor(4);
+  const int n = g_0p4->GetN();
+  TGraphErrors * df0p3 = new TGraphErrors(n);
+  TGraphErrors * df0p2 = new TGraphErrors(n);
+  char title[1000];
+  sprintf(title, "%s;%s;%s", "", g_0p4->GetXaxis()->GetTitle(), "#DeltaF_{dir} / (1 - F_{dir})");
+  df0p3->SetTitle(title);
+  df0p2->SetTitle(title);
 
-   TFile * f_0p2 = TFile::Open("fragmentation.hdp.0p2.root");
-   TH1D * g_0p2 = (TH1D*)f_0p2->Get(bufferGJets);
-   g_0p2->SetLineWidth(2);
-   g_0p2->SetLineColor(8);
-   TH1D * q_0p2 = (TH1D*)f_0p2->Get(bufferQCD);
-   q_0p2->SetLineWidth(2);
-   q_0p2->SetLineColor(8);
+  for (int i = 0; i < n; ++i) {
+    if (printText) std::cout << "point " << i << std::endl;
 
-   TLegend * l = new TLegend(0.225, 0.175, 0.85, 0.35);
-   l->SetBorderSize(0);
-   l->SetNColumns(3);
-   l->AddEntry(g_0p2, "#DeltaR = 0.2", "L");
-   l->AddEntry(g_0p3, "#DeltaR = 0.3", "L");
-   l->AddEntry(g_0p4, "#DeltaR = 0.4", "L");
-   l->Draw();
+    double x4, y4;
+    g_0p4->GetPoint(i, x4, y4);
+    double y4err = g_0p4->GetErrorY(i);
+    if (printText) std::cout << y4 << " " << y4err << std::endl;
 
-   double w = 400.;
-   if (isWide) w = 600.;
-   TCanvas * c = new TCanvas ("c", "", w, 800.);
-   c->Divide(1, 2);
-   
-   TPad * p1 = (TPad*)c->cd(1);
-   g_0p4->Draw("E");
-   g_0p4->SetStats(0);
-   g_0p4->SetMinimum(0.);
-   double s = 1.1;
-   if (doLog) s = 10.;
-   g_0p4->SetMaximum(s * TMath::Max(g_0p4->GetMaximum(), TMath::Max(g_0p3->GetMaximum(), g_0p2->GetMaximum())));
-   g_0p3->Draw("E, SAME");
-   g_0p2->Draw("E, SAME");
-   if (doLog) {
-      g_0p4->SetMinimum(0.1);
-      p1->SetLogy();
-   }
-   l->Draw();
-   labelCMS("35.9");
-   
-   TPad * p2 = (TPad*)c->cd(2);
-   q_0p4->Draw("E");
-   q_0p4->SetStats(0);
-   q_0p4->SetMinimum(0.);
-   q_0p4->SetMaximum(s * TMath::Max(q_0p4->GetMaximum(), TMath::Max(q_0p3->GetMaximum(), q_0p2->GetMaximum())));
-   q_0p3->Draw("E, SAME");
-   q_0p2->Draw("E, SAME");
-   if (doLog) {
-      q_0p4->SetMinimum(0.1);
-      p2->SetLogy();
-   }
-   l->Draw();
-   labelCMS("35.9");
-   
-   c->SaveAs("plots/yields_" + histname + ".pdf");
-}*/
+    double x3, y3;
+    g_0p3->GetPoint(i, x3, y3);
+    double y3err = g_0p3->GetErrorY(i);
+    if (printText) std::cout << y3 << " " << y3err << std::endl;
 
-void runHist(const TString histname, const bool isWide=false)
-{
-   TFile * f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.root");
-   TH1D * g_0p4 = (TH1D*)f_0p4->Get(histname);
+    double x2, y2;
+    g_0p2->GetPoint(i, x2, y2);
+    double y2err = g_0p2->GetErrorY(i);
+    if (printText) std::cout << y2 << " " << y2err << std::endl;
 
-   TFile * f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.root");
-   TH1D * g_0p3 = (TH1D*)f_0p3->Get(histname);
+    double val1 = (y3-y4)/(1.-y4);
+    df0p3->SetPoint(i, x4, val1);
+    double err1 = pow(1.-y4, 2)*pow(y3err, 2) + pow(1.-y3, 2)*pow(y4err, 2);
+    err1 = sqrt(err1)/pow(1.-y4, 2);
+    df0p3->SetPointError(i, 0., err1);
+    if (printText) std::cout << val1 << " " << err1 << std::endl;
 
-   TFile * f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.root");
-   TH1D * g_0p2 = (TH1D*)f_0p2->Get(histname);
- 
-   const int n = g_0p4->GetNbinsX();
-   TGraphErrors * df0p3 = new TGraphErrors(n);
-   TGraphErrors * df0p2 = new TGraphErrors(n);
-   char title[1000];
-   sprintf(title, "%s;%s;%s", "", g_0p4->GetXaxis()->GetTitle(), "#DeltaF_{dir} / (1 - F_{dir})");
-   df0p3->SetTitle(title);
-   df0p2->SetTitle(title);
-   
-   for (int i = 0; i < n; ++i) {
-      
-      std::cout << "point " << i << std::endl;
-
-      const int x0 = g_0p4->GetBinCenter(i+1);
-
-      const double y4 = g_0p4->GetBinContent(i+1);
-      const double y4err = g_0p4->GetBinError(i+1);
-      std::cout << y4 << " " << y4err << std::endl;
-
-      const double y3 = g_0p3->GetBinContent(i+1);
-      const double y3err = g_0p3->GetBinError(i+1);
-      std::cout << y3 << " " << y3err << std::endl;
-
-      const double y2 = g_0p2->GetBinContent(i+1);
-      const double y2err = g_0p2->GetBinError(i+1);
-      std::cout << y2 << " " << y2err << std::endl;
-     
-      double val3 = (y3-y4)/(1.-y4);
-      df0p3->SetPoint(i, x0, val3);
-      double err3 = pow(1.-y4, 2)*pow(y3err, 2) + pow(1.-y3, 2)*pow(y4err, 2);
-      err3 = sqrt(err3)/pow(1.-y4, 2);
-      df0p3->SetPointError(i, 0., err3);
-      std::cout << val3 << " " << err3 << std::endl;
-
-      double val2 = (y2-y4)/(1.-y4);
-      df0p2->SetPoint(i, x0, val2);
-      double err2 = pow(1.-y2, 2)*pow(y2err, 2) + pow(1.-y2, 2)*pow(y4err, 2);
-      err2 = sqrt(err2)/pow(1.-y4, 2);
-      df0p2->SetPointError(i, 0, err2);
+    double val2 = (y2-y4)/(1.-y4);
+    df0p2->SetPoint(i, x4, val2);
+    double err2 = pow(1.-y4, 2)*pow(y2err, 2) + pow(1.-y2, 2)*pow(y4err, 2);//possibly fix
+    err2 = sqrt(err2)/pow(1.-y4, 2);
+    df0p2->SetPointError(i, 0., err2);
+    if (printText) {
       std::cout << val2 << " " << err2 << std::endl;
-   
       std::cout << "" << std::endl;
-   }
+    }
 
- 
-   double width = 400.;
-   if (isWide) width = 600.;
-   
-   TCanvas * c = new TCanvas("c", "", width, 400.);
+  }
 
-   df0p3->SetMarkerStyle(20);
-   df0p3->SetMarkerColor(4);
-   df0p3->SetLineColor(4);
-   df0p3->Draw("APE");
-   df0p3->SetMinimum(-1.);
-   df0p3->SetMaximum(1.);
+  double width = 400.;
+  if (isWide) width = 600.;
 
-   if (isWide) drawLines46(-1., 1.);
+  double W = 800;
+  double H = 600;
+  double T = 0.10*H;
+  double B = 0.12*H;
+  double L = 0.12*W;
+  double R = 0.04*W;
+  TCanvas * can_h = new TCanvas("canvName","canvName", 50, 50, W, H);
+  can_h->SetFillColor(0);
+  can_h->SetBorderMode(0);
+  can_h->SetFrameFillStyle(0);
+  can_h->SetFrameBorderMode(0);
+  can_h->SetLeftMargin( L/W );
+  can_h->SetRightMargin( R/W );
+  can_h->SetTopMargin( T/H );
+  can_h->SetBottomMargin( B/H );
+  can_h->SetTickx(0);
+  can_h->SetTicky(0);
 
-   df0p2->SetMarkerStyle(20);
-   df0p2->SetMarkerColor(8);
-   df0p2->SetLineColor(8);
-   df0p2->Draw("PE, SAME");
+  df0p3->SetMarkerStyle(20);
+  df0p3->SetMarkerColor(kBlue);
+  df0p3->SetLineColor(kBlue);
+  df0p3->Draw("APE");
+  if (histname.Contains("8910")){
+    df0p3->GetXaxis()->SetLimits(0.1,47.0);
+    df0p3->SetMinimum(-2.);
+    df0p3->SetMaximum(2.);
+  }
+  else {
+    df0p3->SetMinimum(-1.5);
+    df0p3->SetMaximum(1.5);
+    df0p3->SetMarkerSize(1.2);
+    df0p2->SetMarkerSize(1.2);
+  }
+  df0p3->Draw("APE");
 
-   TLegend * l = new TLegend(0.225, 0.77, 0.85, 0.89);
-   l->SetBorderSize(0);
-   l->SetNColumns(2);
-   l->AddEntry(df0p2, "#DeltaR = 0.2", "P");
-   l->AddEntry(df0p3, "#DeltaR = 0.3", "P");
-   l->Draw();
+  df0p2->SetMarkerStyle(20);
+  df0p2->SetMarkerColor(2001);
+  df0p2->SetLineColor(2001);
+  df0p2->Draw("PE, SAME");
 
-   labelCMS();
-   c->SaveAs("plots/dfover1mf." + histname + ".pdf");
+  TLegend * l1a = new TLegend(0.3, 0.77, 0.5, 0.89);
+  TLegend * l1b = new TLegend(0.475, 0.77, 0.675, 0.89);
+  l1a->SetBorderSize(0);
+  l1b->SetBorderSize(0);
+  l1a->AddEntry(df0p2, "#DeltaR = 0.2", "P");
+  l1b->AddEntry(df0p3, "#DeltaR = 0.3", "P");
+  l1a->Draw("same");
+  l1b->Draw("same");
 
-   TCanvas * c2 = new TCanvas("c2", "", width, 400.);
-   g_0p3->SetMarkerStyle(20);
-   g_0p3->SetMarkerColor(4);
-   g_0p3->SetLineColor(4);
-   g_0p3->Draw("PE");
-   g_0p3->SetMinimum(0.6);
-   g_0p3->SetMaximum(1.05);
-   g_0p3->SetStats(0);
+  if (isWide) drawLines46(-2., 2.);
 
-   if (isWide) drawLines46(0.6, 1.05);
+  //Njet labels
+  TLatex ttext_njet;
+  if (histname.Contains("8910")){
+    ttext_njet.SetTextFont(42);
+    ttext_njet.SetTextSize(0.037);
+    ttext_njet.SetTextAlign(22);
+    ttext_njet.DrawLatex(5.8, -1.6 , "2 #leq N_{#scale[0.2]{ }jet} #leq 3");
+    ttext_njet.DrawLatex(15.8, -1.6 , "4 #leq N_{#scale[0.2]{ }jet} #leq 5");
+    ttext_njet.DrawLatex(25.8, -1.6, "6 #leq N_{#scale[0.2]{ }jet} #leq 7");
+    ttext_njet.DrawLatex(34.8, -1.6, "N_{#scale[0.2]{ }jet} #geq 8");
+    ttext_njet.DrawLatex(42.2, -1.6, "N_{#scale[0.2]{ }jet} #geq 8");
+  }
 
-   g_0p2->SetMarkerStyle(20);
-   g_0p2->SetMarkerColor(8);
-   g_0p2->SetLineColor(8);
-   g_0p2->Draw("PE, SAME");
+  labelCMS(year);
+  can_h->SaveAs("plots"+year+"/dfover1mf." + histname + ".pdf");
+  delete can_h;
 
-   g_0p4->SetMarkerStyle(20);
-   g_0p4->SetMarkerColor(6);
-   g_0p4->SetLineColor(6);
-   g_0p4->Draw("PE, SAME");
+  TCanvas * c2 = new TCanvas("c2", "", width, 400.);
+  c2->SetFillColor(0);
+  c2->SetBorderMode(0);
+  c2->SetFrameFillStyle(0);
+  c2->SetFrameBorderMode(0);
+  c2->SetLeftMargin( L/W );
+  c2->SetRightMargin( R/W );
+  c2->SetTopMargin( T/H );
+  c2->SetBottomMargin( B/H );
+  c2->SetTickx(0);
+  c2->SetTicky(0);
 
-   TLegend * l2 = new TLegend(0.225, 0.175, 0.85, 0.35);
-   l2->SetBorderSize(0);
-   l2->SetNColumns(3);
-   l2->AddEntry(g_0p2, "#DeltaR = 0.2", "P");
-   l2->AddEntry(g_0p3, "#DeltaR = 0.3", "P");
-   l2->AddEntry(g_0p4, "#DeltaR = 0.4", "P");
-   l2->Draw();
+  char title2[1000];
+  sprintf(title2, "%s;%s;%s", "", g_0p3->GetXaxis()->GetTitle(), "Direct photon fraction");
+  g_0p3->SetTitle(title2);
+  g_0p3->SetMaximum(1.01);
+  g_0p3->SetMarkerStyle(20);
+  g_0p3->SetMarkerSize(0.7);
+  g_0p3->SetMarkerColor(kBlue);
+  g_0p3->SetLineColor(kBlue);
+  g_0p3->Draw("APE");
+  if (histname.Contains("NJets8910")){
+    g_0p3->SetMinimum(0.6);
+    g_0p3->GetXaxis()->SetLimits(0.1,47.0);
+  }
+  else if (histname.Contains("NJets")){
+    g_0p3->SetMinimum(0.2);
+  }
+  else {
+    g_0p3->SetMinimum(0.6);
+    g_0p3->GetXaxis()->SetLimits(280,1320);
+  }
 
-   labelCMS();
-   c2->SaveAs("plots/frag." + histname + ".pdf");
+  g_0p3->Draw("APE");
+  g_0p2->SetMarkerStyle(20);
+  g_0p2->SetMarkerSize(0.7);
+  g_0p2->SetMarkerColor(2001);
+  g_0p2->SetLineColor(2001);
+  g_0p2->Draw("PE");
+  g_0p4->SetMarkerStyle(20);
+  g_0p4->SetMarkerSize(0.7);
+  g_0p4->SetMarkerColor(2002);
+  g_0p4->SetLineColor(2002);
+  g_0p4->Draw("PE");
+
+  TLegend * l2a = new TLegend(0.15, 0.27, 0.33, 0.39);
+  TLegend * l2b = new TLegend(0.32, 0.27, 0.50, 0.39);
+  TLegend * l2c = new TLegend(0.49, 0.27, 0.67, 0.39);
+
+  l2a->SetBorderSize(0);
+  l2b->SetBorderSize(0);
+  l2c->SetBorderSize(0);
+  l2a->AddEntry(g_0p2, "#DeltaR = 0.2", "P");
+  l2b->AddEntry(g_0p3, "#DeltaR = 0.3", "P");
+  l2c->AddEntry(g_0p4, "#DeltaR = 0.4", "P");
+  l2a->Draw("same");
+  l2b->Draw("same");
+  l2c->Draw("same");
+
+  if (isWide) drawLines46(0.6, 1.01);
+  if (histname.Contains("8910")){
+    g_0p4->GetXaxis()->SetLimits(0.1,47.0);
+    ttext_njet.DrawLatex(5.8, 0.65 , "2 #leq N_{#scale[0.2]{ }jet} #leq 3");
+    ttext_njet.DrawLatex(16., 0.65 , "4 #leq N_{#scale[0.2]{ }jet} #leq 5");
+    ttext_njet.DrawLatex(25.8, 0.65, "6 #leq N_{#scale[0.2]{ }jet} #leq 7");
+    ttext_njet.DrawLatex(34.8, 0.65, "N_{#scale[0.2]{ }jet} #geq 8");
+    ttext_njet.DrawLatex(43.0, 0.65, "N_{#scale[0.2]{ }jet} #geq 8");
+  }
+
+  labelCMS(year);
+  c2->Update();
+  c2->SaveAs("plots"+year+"/frag." + histname + ".pdf");
+  delete c2;
 }
 
-void dfover1mf()
-{
-   //runHist("HT");
-   //runHist("MHT");
-   //runHist("NJets");
-   runHist("bin46_NJets8910", true);
+void dfover1mf() {
+  runHist("HT");
+  runHist("MHT");
+  runHist("NJets");
+  runHist("bin46_NJets8910", true);
 }

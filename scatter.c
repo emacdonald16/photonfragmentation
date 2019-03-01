@@ -5,78 +5,99 @@
 #include <TFile.h>
 #include <TH1D.h>
 #include <TCanvas.h>
+#include "analysisTools.h"
 
-void scatter()
-{
-   TFile * f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.root");
-   TH1D * g_0p4 = (TH1D*)f_0p4->Get("bin46_NJets8910");
+//TString year = "2016";
+TString year = "2017";
 
-   TFile * f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.root");
-   TH1D * g_0p3 = (TH1D*)f_0p3->Get("bin46_NJets8910");
+void scatter() {
+  TFile * f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.2016.root");
+  TFile * f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.2016.root");
+  TFile * f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.2016.root");
 
-   TFile * f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.root");
-   TH1D * g_0p2 = (TH1D*)f_0p2->Get("bin46_NJets8910");
+  if (year.Contains("17")) {
+    f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.2017.root");
+    f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.2017.root");
+    f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.2017.root");
+  }
 
-   TH1D * h3 = new TH1D("h3", ";#DeltaF_{dir} / (1 - F_{dir});number of bins", 20, -1., 1.);
-   h3->SetLineWidth(2);
-   h3->SetLineColor(4);
-   TH1D * h2 = new TH1D("h2", ";#DeltaF_{dir} / (1 - F_{dir});number of bins;", 20, -1., 1.);
-   h2->SetLineWidth(2);
-   h2->SetLineColor(8);
- 
-   for (int i = 0; i < 38; ++i) {
-  
-      const double x = g_0p4->GetBinCenter(i); 
- 
-      double y4 = g_0p4->GetBinContent(i);
-      double y4err = g_0p4->GetBinError(i);
+  TGraphAsymmErrors * g_0p4 = (TGraphAsymmErrors*)f_0p4->Get("bin46_NJets8910");
+  TGraphAsymmErrors * g_0p3 = (TGraphAsymmErrors*)f_0p3->Get("bin46_NJets8910");
+  TGraphAsymmErrors * g_0p2 = (TGraphAsymmErrors*)f_0p2->Get("bin46_NJets8910");
 
-      double y3 = g_0p3->GetBinContent(i);
-      double y1err = g_0p3->GetBinError(i);
+  TH1D * h3 = new TH1D("h3", ";#DeltaF_{dir} / (1 - F_{dir});Bins", 20, -1., 1.);
+  h3->SetLineWidth(2);
+  h3->SetLineColor(kBlue);
+  TH1D * h2 = new TH1D("h2", ";#DeltaF_{dir} / (1 - F_{dir});Bins;", 20, -1., 1.);
+  h2->SetLineWidth(2);
+  h2->SetLineColor(2001);
 
-      double y2 = g_0p2->GetBinContent(i);
-      double y2err = g_0p2->GetBinError(i);
-      
-      double val3 = (y3-y4)/(1.-y4);
-      //double err1 = pow(1.-y0, 2)*pow(y1err, 2) + pow(1.-y1, 2)*pow(y0err, 2);
-      //err1 = sqrt(err1)/pow(1.-y0, 2);
-      h3->Fill(val3);
+  for (int i = 0; i < 38; ++i) {
 
-      double val2 = (y2-y4)/(1.-y4);
-      //double err2 = pow(1.-y0, 2)*pow(y2err, 2) + pow(1.-y2, 2)*pow(y0err, 2);
-      //err2 = sqrt(err2)/pow(1.-y0, 2);
-      h2->Fill(val2);
-   }
+    double x0, y0;
+    g_0p4->GetPoint(i, x0, y0);
+    double y0err = g_0p4->GetErrorY(i);
 
-   gStyle->SetOptStat("mr");
+    double x1, y1;
+    g_0p3->GetPoint(i, x1, y1);
+    double y1err = g_0p3->GetErrorY(i);
 
-   // c1 is a hack to get the stats boxes
-   TCanvas c1("c1", "", 800., 400.);
-   c1.Divide(2, 1);
-   c1.cd(1);
-   h3->Draw();
-   c1.cd(2);
-   h2->Draw();
-   c1.Update();
-   gPad->Update();
-   TPaveStats *st21 = (TPaveStats*)h3->FindObject("stats");
-   st21->SetLineColor(4);
-   st21->SetTextColor(4);
-   TPaveStats *st22 = (TPaveStats*)h2->FindObject("stats");
-   st22->SetLineColor(8);
-   st22->SetTextColor(8);
+    double x2, y2;
+    g_0p2->GetPoint(i, x2, y2);
+    double y2err = g_0p2->GetErrorY(i);
 
-   TCanvas * c2 = new TCanvas("c2", "", 400., 400.);
-   h3->Draw();
-   h2->Draw("SAME");
+    double val1 = (y1-y0)/(1.-y0);
+    h3->Fill(val1);
 
-   double height = st22->GetY2NDC()-st22->GetY1NDC();
-   st22->SetY2NDC(st21->GetY1NDC()-.005);
-   st22->SetY1NDC(st22->GetY2NDC()-height);
-   st21->Draw();
-   st22->Draw();
+    double val2 = (y2-y0)/(1.-y0);
+    h2->Fill(val2);
+  }
 
-   labelCMS();
-   c2->SaveAs("plots/fragSystematics46Scatter.pdf");
+  gStyle->SetOptStat("mr");
+
+  // c1 is a hack to get the stats boxes
+  TCanvas c1("c1", "", 800., 400.);
+  c1.Divide(2, 1);
+  c1.cd(1);
+  h3->Draw();
+  c1.cd(2);
+  h2->Draw();
+  c1.Update();
+  gPad->Update();
+  TPaveStats *st21 = (TPaveStats*)h3->FindObject("stats");
+  st21->SetLineColor(kBlue);
+  st21->SetTextColor(kBlue);
+  TPaveStats *st22 = (TPaveStats*)h2->FindObject("stats");
+  st22->SetLineColor(2001);
+  st22->SetTextColor(2001);
+
+  TCanvas * c2 = new TCanvas("c2", "", 500., 400.);
+  h3->SetMaximum(18.);
+  h3->Draw();
+  h2->Draw("SAME");
+
+  TLegend * l = new TLegend(0.20, 0.77, 0.62, 0.89);
+  l->SetBorderSize(0);
+  l->SetNColumns(2);
+  l->AddEntry(h2, "#DeltaR = 0.2", "L");
+  l->AddEntry(h3, "#DeltaR = 0.3", "L");
+  l->Draw("same");
+
+
+  double height = st22->GetY2NDC()-st22->GetY1NDC();
+  double width = st22->GetX2NDC()-st22->GetX1NDC();
+  st21->SetY2NDC(0.89);
+  st21->SetY1NDC(0.89-height);
+  st21->SetX2NDC(0.89);
+  st21->SetX1NDC(0.89-width);
+  st22->SetY2NDC(st21->GetY1NDC()-.005);
+  st22->SetY1NDC(st22->GetY2NDC()-height);
+
+  st22->SetX2NDC(st21->GetX2NDC());
+  st22->SetX1NDC(st21->GetX1NDC());
+  st21->Draw("same");
+  st22->Draw("same");
+
+  labelCMS(year);
+  c2->SaveAs("plots"+year+"/fragSystematics46Scatter.pdf");
 }
-
