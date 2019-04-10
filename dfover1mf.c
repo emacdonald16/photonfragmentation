@@ -9,18 +9,18 @@
 #include <TGraphErrors.h>
 
 //TString year = "2016";
-TString year = "2017";
+//TString year = "2017";
+TString year = "_com";
+
+bool allBs = true;
+TString dirTag = "allBs";
 
 void runHist(const TString histname, const bool isWide=false) {
   bool printText = false;
-  TFile * f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.2016.root");
-  TFile * f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.2016.root");
-  TFile * f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.2016.root");
-  if (year.Contains("17")) {
-    f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.2017.root");
-    f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.2017.root");
-    f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.2017.root");
-  }
+  TFile * f_0p4 = TFile::Open("fragmentation."+dirTag+".sp0p4."+year+".root");
+  TFile * f_0p3 = TFile::Open("fragmentation."+dirTag+".sp0p3."+year+".root");
+  TFile * f_0p2 = TFile::Open("fragmentation."+dirTag+".sp0p2."+year+".root");
+
   TGraphAsymmErrors * g_0p4 = (TGraphAsymmErrors*)f_0p4->Get(histname);
   TGraphAsymmErrors * g_0p3 = (TGraphAsymmErrors*)f_0p3->Get(histname);
   TGraphAsymmErrors * g_0p2 = (TGraphAsymmErrors*)f_0p2->Get(histname);
@@ -138,7 +138,11 @@ void runHist(const TString histname, const bool isWide=false) {
   }
 
   labelCMS(year);
-  can_h->SaveAs("plots"+year+"/dfover1mf." + histname + ".pdf");
+  if (allBs) {
+    if (histname.Contains("8910")) can_h->SaveAs("allBs/plots"+year+"/fragSystematics46.pdf");
+    can_h->SaveAs("allBs/plots"+year+"/fragSystematics" + histname + ".pdf");
+  }
+  else  can_h->SaveAs("plots"+year+"/fragSystematics" + histname + ".pdf");
   delete can_h;
 
   TCanvas * c2 = new TCanvas("c2", "", width, 400.);
@@ -212,8 +216,8 @@ void runHist(const TString histname, const bool isWide=false) {
 
   labelCMS(year);
   c2->Update();
-  c2->SaveAs("plots"+year+"/frag." + histname + ".pdf");
-  delete c2;
+  if (allBs) c2->SaveAs("allBs/plots"+year+"/frag." + histname + ".pdf");
+  else c2->SaveAs("plots"+year+"/frag." + histname + ".pdf");  delete c2;
 }
 
 void dfover1mf() {

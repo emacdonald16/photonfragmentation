@@ -7,15 +7,17 @@
 
 
 //TString year = "2016";
-TString year = "2017";
-//TString year = "_com";
+//TString year = "2017";
+TString year = "_com";
+bool allBs = true;
+
+//TString dirTag = "hdp";
+TString dirTag = "allBs";
 
 void overlay();
 
 void fragPlot() {
-  TFile * f = TFile::Open("fragmentation.hdp.sp0p4.2016.root");
-  if (year.Contains("17")) f = TFile::Open("fragmentation.hdp.sp0p4.2017.root");
-  else if (year.Contains("com")) f = TFile::Open("fragmentation.hdp.sp0p4._com.root");
+  TFile * f = TFile::Open("fragmentation."+dirTag+".sp0p4."+year+".root");
 
   double W = 800;
   double H = 600;
@@ -81,8 +83,14 @@ void fragPlot() {
   ttext_njet.DrawLatex(42.8, 0.62, "N_{#scale[0.2]{ }jet} #geq 8");
 
   can_h->Update();
-  can_h->SaveAs("plots"+year+"/fragmentation.pdf");
-  g_bin46_NJets8910->SaveAs("plots"+year+"/fragmentation.root");
+  if (allBs){
+    can_h->SaveAs("allBs/plots"+year+"/fragmentation.pdf");
+    g_bin46_NJets8910->SaveAs("allBs/plots"+year+"/fragmentation.root");
+  }
+  else {
+    can_h->SaveAs("plots"+year+"/fragmentation.pdf");
+    g_bin46_NJets8910->SaveAs("plots"+year+"/fragmentation.root");
+  }
 
 
   TCanvas * c2 = new TCanvas("c2","c2", 2400.,600.);
@@ -140,10 +148,11 @@ void fragPlot() {
   g_NJets->SetMaximum(1.01);
   labelCMS(year);
 
-  c2->SaveAs("plots"+year+"/fragmentation.vars.pdf");
-
-  //if com, plot 2016 and 2017 on same canvas
-  if (year.Contains("com")) overlay();
+  if (allBs) c2->SaveAs("allBs/plots"+year+"/fragmentationvars.pdf");
+  else c2->SaveAs("plots"+year+"/fragmentationvars.pdf");
+  delete c2;
+  //if com, plot 2016 and 2017 on same canvas - Need to update this since now have 2018 MC
+  //if (year.Contains("com")) overlay();
 }
 
 

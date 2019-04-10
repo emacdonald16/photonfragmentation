@@ -3,6 +3,7 @@
 #include "analysisTools.h"
 #include <TChain.h>
 #include <TLorentzVector.h>
+#include <TGraphAsymmErrors.h>
 #include <TH1D.h>
 
 //TString year = "2016";
@@ -90,11 +91,15 @@ void fragmentation::fillHists(TChain * chain, const int hid, const double sp) {
 
     if (which_file.Contains("MC2016")) {
       //cout<<"Found file (2016) correctly!"<<endl;
-      Weight = Weight * 35862.824;
+      Weight = Weight * 35922.000;
     }
     else if (which_file.Contains("MC2017")) {
       //cout<<"Found file (2017) correctly!"<<endl;
       Weight = Weight * 41529.000;
+    }
+    else if (which_file.Contains("MC2018")) {
+      //cout<<"Found file (2018) correctly!"<<endl;
+      Weight = Weight * 59740.000;
     }
 
 
@@ -154,7 +159,8 @@ void fragmentation::run(double sp=0.4, TString spTag = "sp0p4") {
   else if (sp==0.2) spTag = "sp0p2";
 
   // nominal high-delta phi region
-  const TString dir = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV16/tree_GJet_CleanVars/";
+  const TString dir1 = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV16/tree_GJet_CleanVars/";
+  const TString dir2 = "/eos/uscms/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV17/tree_GJet_CleanVars/"; //for 2018 MC
   //const TString dirTag = "hdp";
   const TString dirTag = "allBs";
 
@@ -167,67 +173,79 @@ void fragmentation::run(double sp=0.4, TString spTag = "sp0p4") {
   TChain * cGJets = new TChain("tree");
 
   if (year.Contains("16")) {
-    cQCD->Add(dir + "tree_QCD_HT-200to300_MC2016.root");
-    cQCD->Add(dir + "tree_QCD_HT-300to500_MC2016.root");
-    cQCD->Add(dir + "tree_QCD_HT-500to700_MC2016.root");
-    cQCD->Add(dir + "tree_QCD_HT-700to1000_MC2016.root");
-    //cQCD->Add(dir + "tree_QCD_HT-700to1000_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-1000to1500_MC2016.root");
-    cQCD->Add(dir + "tree_QCD_HT-1500to2000_MC2016.root");
-    cQCD->Add(dir + "tree_QCD_HT-2000toInf_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-200to300_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-300to500_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-500to700_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-700to1000_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-1000to1500_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-1500to2000_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-2000toInf_MC2016.root");
     initChain(cQCD);
 
-    cGJets->Add(dir + "tree_GJets_HT-100to200_MC2016.root");
-    cGJets->Add(dir + "tree_GJets_HT-200to400_MC2016.root");
-    cGJets->Add(dir + "tree_GJets_HT-400to600_MC2016.root");
-    cGJets->Add(dir + "tree_GJets_HT-600toInf_MC2016.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-100to200_MC2016.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-200to400_MC2016.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-400to600_MC2016.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-600toInf_MC2016.root");
     initChain(cGJets);
   }
 
   else if (year.Contains("17")) {
-    cQCD->Add(dir + "tree_QCD_HT-200to300_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-300to500_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-500to700_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-700to1000_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-1000to1500_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-1500to2000_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-2000toInf_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-200to300_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-300to500_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-500to700_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-700to1000_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-1000to1500_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-1500to2000_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-2000toInf_MC2017.root");
     initChain(cQCD);
 
-    cGJets->Add(dir + "tree_GJets_HT-100to200_MC2017.root");
-    cGJets->Add(dir + "tree_GJets_HT-200to400_MC2017.root");
-    cGJets->Add(dir + "tree_GJets_HT-400to600_MC2017.root");
-    cGJets->Add(dir + "tree_GJets_HT-600toInf_MC2017.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-100to200_MC2017.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-200to400_MC2017.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-400to600_MC2017.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-600toInf_MC2017.root");
     initChain(cGJets);
   }
 
   else if (year.Contains("com")) {
-    cQCD->Add(dir + "tree_QCD_HT-200to300_MC2016.root");
-    cQCD->Add(dir + "tree_QCD_HT-300to500_MC2016.root");
-    cQCD->Add(dir + "tree_QCD_HT-500to700_MC2016.root");
-    cQCD->Add(dir + "tree_QCD_HT-700to1000_MC2016.root");
-    cQCD->Add(dir + "tree_QCD_HT-1000to1500_MC2016.root");
-    cQCD->Add(dir + "tree_QCD_HT-1500to2000_MC2016.root");
-    cQCD->Add(dir + "tree_QCD_HT-2000toInf_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-200to300_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-300to500_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-500to700_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-700to1000_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-1000to1500_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-1500to2000_MC2016.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-2000toInf_MC2016.root");
 
-    cQCD->Add(dir + "tree_QCD_HT-200to300_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-300to500_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-500to700_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-700to1000_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-1000to1500_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-1500to2000_MC2017.root");
-    cQCD->Add(dir + "tree_QCD_HT-2000toInf_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-200to300_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-300to500_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-500to700_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-700to1000_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-1000to1500_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-1500to2000_MC2017.root");
+    cQCD->Add(dir1 + "tree_QCD_HT-2000toInf_MC2017.root");
+
+    cQCD->Add(dir2 + "tree_QCD_HT-200to300_MC2018.root");
+    cQCD->Add(dir2 + "tree_QCD_HT-300to500_MC2018.root");
+    cQCD->Add(dir2 + "tree_QCD_HT-500to700_MC2018.root");
+    cQCD->Add(dir2 + "tree_QCD_HT-700to1000_MC2018.root");
+    cQCD->Add(dir2 + "tree_QCD_HT-1000to1500_MC2018.root");
+    cQCD->Add(dir2 + "tree_QCD_HT-1500to2000_MC2018.root");
+    cQCD->Add(dir2 + "tree_QCD_HT-2000toInf_MC2018.root");
     initChain(cQCD);
 
-    cGJets->Add(dir + "tree_GJets_HT-100to200_MC2016.root");
-    cGJets->Add(dir + "tree_GJets_HT-200to400_MC2016.root");
-    cGJets->Add(dir + "tree_GJets_HT-400to600_MC2016.root");
-    cGJets->Add(dir + "tree_GJets_HT-600toInf_MC2016.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-100to200_MC2016.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-200to400_MC2016.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-400to600_MC2016.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-600toInf_MC2016.root");
 
-    cGJets->Add(dir + "tree_GJets_HT-100to200_MC2017.root");
-    cGJets->Add(dir + "tree_GJets_HT-200to400_MC2017.root");
-    cGJets->Add(dir + "tree_GJets_HT-400to600_MC2017.root");
-    cGJets->Add(dir + "tree_GJets_HT-600toInf_MC2017.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-100to200_MC2017.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-200to400_MC2017.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-400to600_MC2017.root");
+    cGJets->Add(dir1 + "tree_GJets_HT-600toInf_MC2017.root");
+
+    cGJets->Add(dir2 + "tree_GJets_HT-100to200_MC2018.root");
+    cGJets->Add(dir2 + "tree_GJets_HT-200to400_MC2018.root");
+    cGJets->Add(dir2 + "tree_GJets_HT-400to600_MC2018.root");
+    cGJets->Add(dir2 + "tree_GJets_HT-600toInf_MC2018.root");
     initChain(cGJets);
   }
 

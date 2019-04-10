@@ -8,27 +8,31 @@
 #include "analysisTools.h"
 
 //TString year = "2016";
-TString year = "2017";
+//TString year = "2017";
+TString year = "_com";
+
+bool allBs = true;
+//TString dirTag = "hdp";
+TString dirTag = "allBs";
+
 
 void scatter() {
-  TFile * f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.2016.root");
-  TFile * f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.2016.root");
-  TFile * f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.2016.root");
+  // TFile * f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.2016.root");
+  // TFile * f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.2016.root");
+  // TFile * f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.2016.root");
 
-  if (year.Contains("17")) {
-    f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.2017.root");
-    f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.2017.root");
-    f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.2017.root");
-  }
+  TFile * f_0p4 = TFile::Open("fragmentation."+dirTag+".sp0p4."+year+".root");
+  TFile * f_0p3 = TFile::Open("fragmentation."+dirTag+".sp0p3."+year+".root");
+  TFile * f_0p2 = TFile::Open("fragmentation."+dirTag+".sp0p2."+year+".root");
 
   TGraphAsymmErrors * g_0p4 = (TGraphAsymmErrors*)f_0p4->Get("bin46_NJets8910");
   TGraphAsymmErrors * g_0p3 = (TGraphAsymmErrors*)f_0p3->Get("bin46_NJets8910");
   TGraphAsymmErrors * g_0p2 = (TGraphAsymmErrors*)f_0p2->Get("bin46_NJets8910");
 
-  TH1D * h3 = new TH1D("h3", ";#DeltaF_{dir} / (1 - F_{dir});Bins", 20, -1., 1.);
+  TH1D * h3 = new TH1D("h3", ";#DeltaF_{dir} / (1 - F_{dir});Bins", 20, -0.8, 0.8);
   h3->SetLineWidth(2);
   h3->SetLineColor(kBlue);
-  TH1D * h2 = new TH1D("h2", ";#DeltaF_{dir} / (1 - F_{dir});Bins;", 20, -1., 1.);
+  TH1D * h2 = new TH1D("h2", ";#DeltaF_{dir} / (1 - F_{dir});Bins;", 20, -0.8, 0.8);
   h2->SetLineWidth(2);
   h2->SetLineColor(2001);
 
@@ -72,7 +76,7 @@ void scatter() {
   st22->SetTextColor(2001);
 
   TCanvas * c2 = new TCanvas("c2", "", 500., 400.);
-  h3->SetMaximum(18.);
+  h3->SetMaximum(11.);
   h3->Draw();
   h2->Draw("SAME");
 
@@ -99,5 +103,6 @@ void scatter() {
   st22->Draw("same");
 
   labelCMS(year);
-  c2->SaveAs("plots"+year+"/fragSystematics46Scatter.pdf");
+  if (allBs) c2->SaveAs("allBs/plots"+year+"/fragSystematics46Scatter.pdf");
+  else c2->SaveAs("plots"+year+"/fragSystematics46Scatter.pdf");
 }

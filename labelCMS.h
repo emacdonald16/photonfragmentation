@@ -58,7 +58,7 @@ void labelCMS(TString year,const bool showlumi = true) {
   if (showlumi) {
     if (year.Contains("16"))      label0->AddText("Simulation                35.9 fb^{1} (13 TeV)");
     else if (year.Contains("17")) label0->AddText("Simulation                41.5 fb^{1} (13 TeV)");
-    else if (year.Contains("com"))label0->AddText("Simulation           2016+2017 MC (13 TeV)");
+    else if (year.Contains("com"))label0->AddText("Simulation      2016+2017+2018 MC (13 TeV)");
   } else {
     label0->AddText("Simulation  #it{Preliminary}   (13 TeV)");
   }
@@ -92,7 +92,7 @@ void CMS_lumi(TString year, TCanvas *pad, int iPeriod, float iPosX) {
 
   const char * lumiText16 = "35.9 fb^{-1} (13 TeV)";
   const char * lumiText17 = "41.5 fb^{-1} (13 TeV)";
-  const char * lumiTextcom = "2016+2017 MC (13 TeV)";
+  const char * lumiTextcom = "2016+2017+2018 MC (13 TeV)";
 
 
   TLatex latex;
