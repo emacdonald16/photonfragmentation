@@ -8,11 +8,12 @@
 
 //TString year = "2016";
 //TString year = "2017";
-TString year = "_com";
+// TString year = "_com";
+TString year = "V17";
 bool allBs = true;
 
-//TString dirTag = "hdp";
-TString dirTag = "allBs";
+TString dirTag = "hdp";
+// TString dirTag = "allBs";
 
 void overlay();
 
@@ -84,8 +85,10 @@ void fragPlot() {
 
   can_h->Update();
   if (allBs){
-    can_h->SaveAs("allBs/plots"+year+"/fragmentation.pdf");
-    g_bin46_NJets8910->SaveAs("allBs/plots"+year+"/fragmentation.root");
+    // can_h->SaveAs("allBs/plots"+year+"/fragmentation.pdf");
+    // g_bin46_NJets8910->SaveAs("allBs/plots"+year+"/fragmentation.root");
+    can_h->SaveAs("plots_"+year+"/fragmentation.pdf");
+    g_bin46_NJets8910->SaveAs("plots_"+year+"/fragmentation.root");
   }
   else {
     can_h->SaveAs("plots"+year+"/fragmentation.pdf");
@@ -148,7 +151,9 @@ void fragPlot() {
   g_NJets->SetMaximum(1.01);
   labelCMS(year);
 
-  if (allBs) c2->SaveAs("allBs/plots"+year+"/fragmentationvars.pdf");
+  // if (allBs) c2->SaveAs("allBs/plots"+year+"/fragmentationvars.pdf");
+  if (allBs) c2->SaveAs("plots_"+year+"/fragmentationvars.pdf");
+
   else c2->SaveAs("plots"+year+"/fragmentationvars.pdf");
   delete c2;
   //if com, plot 2016 and 2017 on same canvas - Need to update this since now have 2018 MC

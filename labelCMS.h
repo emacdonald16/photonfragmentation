@@ -56,9 +56,9 @@ void labelCMS(TString year,const bool showlumi = true) {
   label0->SetTextAlign(25);
   label0->SetTextSize(0.044);
   if (showlumi) {
-    if (year.Contains("16"))      label0->AddText("Simulation                35.9 fb^{1} (13 TeV)");
-    else if (year.Contains("17")) label0->AddText("Simulation                41.5 fb^{1} (13 TeV)");
-    else if (year.Contains("com"))label0->AddText("Simulation      2016+2017+2018 MC (13 TeV)");
+    if (year.Contains("2016"))      label0->AddText("Simulation                35.9 fb^{1} (13 TeV)");
+    else if (year.Contains("2017")) label0->AddText("Simulation                41.5 fb^{1} (13 TeV)");
+    else if (year.Contains("com") || year.Contains("V17")) label0->AddText("Simulation      2016+2017+2018 MC (13 TeV)");
   } else {
     label0->AddText("Simulation  #it{Preliminary}   (13 TeV)");
   }
@@ -105,9 +105,9 @@ void CMS_lumi(TString year, TCanvas *pad, int iPeriod, float iPosX) {
   latex.SetTextAlign(31) ;
   latex.SetTextSize(lumiTextSize*t)  ;
 
-  if (year.Contains("16")) latex.DrawLatex(1-r,1-t+lumiTextOffset*t,lumiText16);
-  else if (year.Contains("17")) latex.DrawLatex(1-r,1-t+lumiTextOffset*t,lumiText17);
-  else if (year.Contains("com")) latex.DrawLatex(1-r,1-t+lumiTextOffset*t,lumiTextcom);
+  if (year.Contains("2016")) latex.DrawLatex(1-r,1-t+lumiTextOffset*t,lumiText16);
+  else if (year.Contains("2017")) latex.DrawLatex(1-r,1-t+lumiTextOffset*t,lumiText17);
+  else if (year.Contains("com") || year.Contains("V17") ) latex.DrawLatex(1-r,1-t+lumiTextOffset*t,lumiTextcom);
 
   if( outOfFrame ){
     latex.SetTextFont(cmsTextFont);

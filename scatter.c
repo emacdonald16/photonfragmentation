@@ -9,17 +9,15 @@
 
 //TString year = "2016";
 //TString year = "2017";
-TString year = "_com";
+// TString year = "_com";
+TString year = "V17";
 
 bool allBs = true;
-//TString dirTag = "hdp";
-TString dirTag = "allBs";
+TString dirTag = "hdp";
+// TString dirTag = "allBs";
 
 
 void scatter() {
-  // TFile * f_0p4 = TFile::Open("fragmentation.hdp.sp0p4.2016.root");
-  // TFile * f_0p3 = TFile::Open("fragmentation.hdp.sp0p3.2016.root");
-  // TFile * f_0p2 = TFile::Open("fragmentation.hdp.sp0p2.2016.root");
 
   TFile * f_0p4 = TFile::Open("fragmentation."+dirTag+".sp0p4."+year+".root");
   TFile * f_0p3 = TFile::Open("fragmentation."+dirTag+".sp0p3."+year+".root");
@@ -103,6 +101,7 @@ void scatter() {
   st22->Draw("same");
 
   labelCMS(year);
-  if (allBs) c2->SaveAs("allBs/plots"+year+"/fragSystematics46Scatter.pdf");
+  // if (allBs) c2->SaveAs("allBs/plots"+year+"/fragSystematics46Scatter.pdf");
+  if (allBs) c2->SaveAs("plots_"+year+"/fragSystematics46Scatter.pdf");
   else c2->SaveAs("plots"+year+"/fragSystematics46Scatter.pdf");
 }

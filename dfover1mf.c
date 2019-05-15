@@ -10,10 +10,12 @@
 
 //TString year = "2016";
 //TString year = "2017";
-TString year = "_com";
+// TString year = "_com";
+TString year = "V17";
 
 bool allBs = true;
-TString dirTag = "allBs";
+// TString dirTag = "allBs";
+TString dirTag = "hdp";
 
 void runHist(const TString histname, const bool isWide=false) {
   bool printText = false;
@@ -139,8 +141,10 @@ void runHist(const TString histname, const bool isWide=false) {
 
   labelCMS(year);
   if (allBs) {
-    if (histname.Contains("8910")) can_h->SaveAs("allBs/plots"+year+"/fragSystematics46.pdf");
-    can_h->SaveAs("allBs/plots"+year+"/fragSystematics" + histname + ".pdf");
+    // if (histname.Contains("8910")) can_h->SaveAs("allBs/plots"+year+"/fragSystematics46.pdf");
+    // can_h->SaveAs("allBs/plots"+year+"/fragSystematics" + histname + ".pdf");
+    if (histname.Contains("8910")) can_h->SaveAs("plots_"+year+"/fragSystematics46.pdf");
+    can_h->SaveAs("plots_"+year+"/fragSystematics" + histname + ".pdf");
   }
   else  can_h->SaveAs("plots"+year+"/fragSystematics" + histname + ".pdf");
   delete can_h;
@@ -216,7 +220,8 @@ void runHist(const TString histname, const bool isWide=false) {
 
   labelCMS(year);
   c2->Update();
-  if (allBs) c2->SaveAs("allBs/plots"+year+"/frag." + histname + ".pdf");
+  // if (allBs) c2->SaveAs("allBs/plots"+year+"/frag." + histname + ".pdf");
+  if (allBs) c2->SaveAs("plots_"+year+"/frag." + histname + ".pdf");
   else c2->SaveAs("plots"+year+"/frag." + histname + ".pdf");  delete c2;
 }
 

@@ -11,7 +11,8 @@
 
 //TString year = "2016";
 //TString year = "2017";
-TString year = "_com";
+// TString year = "_com";
+TString year = "V17";
 
 
 bool allBs = true;
@@ -28,7 +29,7 @@ void madMinPhotonDeltaR() {
   TChain * chain_GJets = new TChain("tree");
   TChain * chain_QCD = new TChain("tree");
 
-  if (year.Contains("16")) {
+  if (year.Contains("2016")) {
     chain_ZJetsToNuNu->Add(sigdir1 + "tree_ZJetsToNuNu_HT-100to200_MC2016.root");
     chain_ZJetsToNuNu->Add(sigdir1 + "tree_ZJetsToNuNu_HT-200to400_MC2016.root");
     chain_ZJetsToNuNu->Add(sigdir1 + "tree_ZJetsToNuNu_HT-400to600_MC2016.root");
@@ -50,7 +51,7 @@ void madMinPhotonDeltaR() {
     chain_QCD->Add(dir1 + "tree_QCD_HT-1500to2000_MC2016.root");
     chain_QCD->Add(dir1 + "tree_QCD_HT-2000toInf_MC2016.root");
   }
-  else if (year.Contains("17")) {
+  else if (year.Contains("2017")) {
     chain_ZJetsToNuNu->Add(sigdir1 + "tree_ZJetsToNuNu_HT-100to200_MC2017.root");
     chain_ZJetsToNuNu->Add(sigdir1 + "tree_ZJetsToNuNu_HT-200to400_MC2017.root");
     chain_ZJetsToNuNu->Add(sigdir1 + "tree_ZJetsToNuNu_HT-400to600_MC2017.root");
@@ -140,9 +141,75 @@ void madMinPhotonDeltaR() {
     chain_QCD->Add(dir2 + "tree_QCD_HT-1500to2000_MC2018.root");
     chain_QCD->Add(dir2 + "tree_QCD_HT-2000toInf_MC2018.root");
 
-
   }
 
+  else if (year.Contains("V17")) {
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-100to200_MC2016.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-200to400_MC2016.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-400to600_MC2016.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-600to800_MC2016.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-800to1200_MC2016.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-1200to2500_MC2016.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-2500toInf_MC2016.root");
+
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-100to200_MC2017.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-200to400_MC2017.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-400to600_MC2017.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-600to800_MC2017.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-800to1200_MC2017.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-1200to2500_MC2017.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-2500toInf_MC2017.root");
+
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-100to200_MC2018.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-200to400_MC2018.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-400to600_MC2018.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-600to800_MC2018.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-800to1200_MC2018.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-1200to2500_MC2018.root");
+    chain_ZJetsToNuNu->Add(sigdir2 + "tree_ZJetsToNuNu_HT-2500toInf_MC2018.root");
+
+
+    chain_GJets->Add(dir2 + "tree_GJets_HT-100to200_MC2016.root");
+    chain_GJets->Add(dir2 + "tree_GJets_HT-200to400_MC2016.root");
+    chain_GJets->Add(dir2 + "tree_GJets_HT-400to600_MC2016.root");
+    chain_GJets->Add(dir2 + "tree_GJets_HT-600toInf_MC2016.root");
+
+    chain_GJets->Add(dir2 + "tree_GJets_HT-100to200_MC2017.root");
+    chain_GJets->Add(dir2 + "tree_GJets_HT-200to400_MC2017.root");
+    chain_GJets->Add(dir2 + "tree_GJets_HT-400to600_MC2017.root");
+    chain_GJets->Add(dir2 + "tree_GJets_HT-600toInf_MC2017.root");
+
+    chain_GJets->Add(dir2 + "tree_GJets_HT-100to200_MC2018.root");
+    chain_GJets->Add(dir2 + "tree_GJets_HT-200to400_MC2018.root");
+    chain_GJets->Add(dir2 + "tree_GJets_HT-400to600_MC2018.root");
+    chain_GJets->Add(dir2 + "tree_GJets_HT-600toInf_MC2018.root");
+
+
+    chain_QCD->Add(dir2 + "tree_QCD_HT-200to300_MC2016.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-300to500_MC2016.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-500to700_MC2016.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-700to1000_MC2016.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-1000to1500_MC2016.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-1500to2000_MC2016.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-2000toInf_MC2016.root");
+
+    chain_QCD->Add(dir2 + "tree_QCD_HT-200to300_MC2017.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-300to500_MC2017.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-500to700_MC2017.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-700to1000_MC2017.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-1000to1500_MC2017.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-1500to2000_MC2017.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-2000toInf_MC2017.root");
+
+    chain_QCD->Add(dir2 + "tree_QCD_HT-200to300_MC2018.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-300to500_MC2018.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-500to700_MC2018.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-700to1000_MC2018.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-1000to1500_MC2018.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-1500to2000_MC2018.root");
+    chain_QCD->Add(dir2 + "tree_QCD_HT-2000toInf_MC2018.root");
+
+  }
   // TChain * chain_GJets_DR0p4 = new TChain("tree");
   // chain_GJets_DR0p4->Add(dir + "tree_GJets_DR-0p4_HT-100to200.root");
   // chain_GJets_DR0p4->Add(dir + "tree_GJets_DR-0p4_HT-200to400.root");
@@ -151,14 +218,14 @@ void madMinPhotonDeltaR() {
 
 
 
-  // TH1D * h = new TH1D("h", ";min #DeltaR (#gamma, hard partons);Events / 0.1", 40, 0., 4.);
-  // const double max = 20000.;
-  // const TString savetag = "4";
+  TH1D * h = new TH1D("h", ";min #DeltaR (#gamma, hard partons);Events / 0.1", 40, 0., 4.);
+  const double max = 26000.;
+  const TString savetag = "4";
 
-  TH1D * h = new TH1D("h", ";min #DeltaR(#gamma, hard partons);Events / 0.05", 16, 0., 0.8);
-  const double max = 7000.;
-  const TString savetag = "0p8";
-  //
+  // TH1D * h = new TH1D("h", ";min #DeltaR(#gamma, hard partons);Events / 0.05", 16, 0., 0.8);
+  // const double max = 7000.;
+  // const TString savetag = "0p8";
+
 
   h->SetLineWidth(2);
   h->SetStats(0);
@@ -177,17 +244,19 @@ void madMinPhotonDeltaR() {
   else cut_baseline = "NJets>=2 && HT>=300. && MHT>=300. && JetID==1 && BTags==0";
   cut_baseline = cut_leptons && cut_tracks && cut_dphi && cut_baseline;
 
-  //TString which_file = chain->GetFile()->GetName();
-
+  //normalize 2016+2017+2018 all to 137/3 inverse fb since each file apparently can't be weight independently
+  // 137/3 = 45666.667 pb
   char cut_ZJetsToNuNu[2000];
-  if (year.Contains("16") || year.Contains("com")) sprintf(cut_ZJetsToNuNu, "Weight * 35922.000 * (%s)", TString(cut_baseline).Data());
-  else if (year.Contains("17")) sprintf(cut_ZJetsToNuNu, "Weight * 41529.000 * (%s)", TString(cut_baseline).Data());
+  if (year.Contains("2016") || year.Contains("com")) sprintf(cut_ZJetsToNuNu, "Weight * 35922.000 * (%s)", TString(cut_baseline).Data());
+  else if (year.Contains("2017")) sprintf(cut_ZJetsToNuNu, "Weight * 41529.000 * (%s)", TString(cut_baseline).Data());
+  else if (year.Contains("V17")) sprintf(cut_ZJetsToNuNu, "Weight * 45666.667 * (%s)", TString(cut_baseline).Data());
   std::cout << "filling from ZJetsToNuNu..." << std::endl;
   chain_ZJetsToNuNu->Project("h_ZJetsToNuNu", "madMinPhotonDeltaR", cut_ZJetsToNuNu);
 
   char cut_GJets[2000];
   if (year.Contains("16") || year.Contains("com")) sprintf(cut_GJets, "Weight * 35922.000 * (%s)", TString(cut_baseline && cut_photon).Data());
-  else if (year.Contains("17"))  sprintf(cut_GJets, "Weight * 41529.000 * (%s)", TString(cut_baseline && cut_photon).Data());
+  else if (year.Contains("2017"))  sprintf(cut_GJets, "Weight * 41529.000 * (%s)", TString(cut_baseline && cut_photon).Data());
+  else if (year.Contains("V17"))  sprintf(cut_GJets, "Weight * 45666.667 * (%s)", TString(cut_baseline && cut_photon).Data());
   std::cout << "filling from GJets..." << std::endl;
   chain_GJets->Project("h_GJets", "madMinPhotonDeltaR", cut_GJets);
   //std::cout << "filling from GJets_DR-0p4..." << std::endl;
@@ -195,7 +264,8 @@ void madMinPhotonDeltaR() {
 
   char cut_QCD[2000];
   if (year.Contains("16") || year.Contains("com")) sprintf(cut_QCD, "Weight * 35922.000 * (%s && madMinDeltaRStatus==1)", TString(cut_baseline && cut_photon).Data());
-  else if (year.Contains("17")) sprintf(cut_QCD, "Weight * 41529.000 * (%s && madMinDeltaRStatus==1)", TString(cut_baseline && cut_photon).Data());
+  else if (year.Contains("2017")) sprintf(cut_QCD, "Weight * 41529.000 * (%s && madMinDeltaRStatus==1)", TString(cut_baseline && cut_photon).Data());
+  else if (year.Contains("V17")) sprintf(cut_QCD, "Weight * 45666.667 * (%s && madMinDeltaRStatus==1)", TString(cut_baseline && cut_photon).Data());
   std::cout << "filling from QCD..." << std::endl;
   chain_QCD->Project("h_QCD", "madMinPhotonDeltaR", cut_QCD);
 
@@ -246,7 +316,8 @@ void madMinPhotonDeltaR() {
 
   CMS_lumi(year,can_h, 0, 0);
   if (allBs){
-    can_h->SaveAs("./allBs/plots"+year+"/madMinPhotonDeltaR"+savetag+".pdf");
+    can_h->SaveAs("./plots_"+year+"/madMinPhotonDeltaR"+savetag+".pdf");
+    // can_h->SaveAs("./allBs/plots"+year+"/madMinPhotonDeltaR"+savetag+".pdf");
     //can_h->SaveAs("./allBs/plots"+year+"/madMinPhotonDeltaR.root");
   }
   else {
